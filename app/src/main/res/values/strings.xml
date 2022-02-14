@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">MusicAPI-Assignment</string>
+    <string name="currency"> %1$s USD </string>
+    <string name="johnny_cash_option">Johnny Cash</string>
+    <string name="hard_rock_option">Hard rock</string>
+    <string name="classic_option">Classic</string>
+</resources>
