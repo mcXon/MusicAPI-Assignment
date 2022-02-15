@@ -15,12 +15,22 @@ import com.example.musicapi_assignment.model.TrackInformation
 
 private const val TAG = "ClassicMusicLayout"
 
-class ClassicMusicLayoutFragment : Fragment() {
+/**
+ * Music Fragment
+ */
+class MusicLayoutFragment : Fragment() {
 
     companion object{
         private const val MUSIC_TYPE = "classic"
-        fun newInstance(musicResponse: MusicResponse) :ClassicMusicLayoutFragment{
-            val fragment = ClassicMusicLayoutFragment()
+
+        /**
+         * Each instance requires an object of MusicResponse in order to display the music of the
+         * selected category (the text of the tabs)
+         *
+         * @see TabLayoutFragment onTabSelected()
+         */
+        fun newInstance(musicResponse: MusicResponse) :MusicLayoutFragment{
+            val fragment = MusicLayoutFragment()
             val bundle = Bundle()
             bundle.putParcelable(MUSIC_TYPE, musicResponse)
             fragment.arguments = bundle
@@ -38,6 +48,11 @@ class ClassicMusicLayoutFragment : Fragment() {
         super.onCreateView(inflater, container, savedInstanceState)
         binding = MusicDetailsFrameLayoutBinding.inflate(inflater, container, false)
 
+        /**
+         * Check the arguments received from the function newInstance() of this class inside the
+         * companion object. If there are items proceed to execute the initView()
+         */
+
         arguments?.let { bundle ->
             bundle.getParcelable<MusicResponse>(MUSIC_TYPE)?.let {
                 initView(it)
@@ -52,6 +67,11 @@ class ClassicMusicLayoutFragment : Fragment() {
     private fun initView(dataset: MusicResponse){
         binding.musicListView.layoutManager = LinearLayoutManager(context)
 
+        /**
+         *Will iterate each element retrieved from the @param dataset  to create an Item of the
+         * adapter and associate it with a TrackInformation object
+         */
+
         binding.musicListView.adapter = MusicItemAdapter(dataset.results.map {
             TrackInformation(
                 it.trackName,
@@ -61,10 +81,15 @@ class ClassicMusicLayoutFragment : Fragment() {
                 it.previewUrl
             )
         }){
+            //onMusicItemSelected will be executed when an item is selected
             requireActivity().onMusicItemSelected(it)
         }
     }
 
+    /**
+     * When an item of the fragment is selected it will send the information of the
+     * object (TrackInformation) selected to the MusicDetailsPlayerFragment
+     */
     private fun FragmentActivity.onMusicItemSelected(trackInformation: TrackInformation){
         supportFragmentManager.beginTransaction().replace(android.R.id.content,
             MusicDetailsPlayerFragment.newInstance(trackInformation)).addToBackStack(null).commit()

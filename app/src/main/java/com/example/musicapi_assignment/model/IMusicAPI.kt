@@ -8,15 +8,19 @@ import retrofit2.http.GET
 import retrofit2.http.Query
 
 interface IMusicAPI {
+
+    //This is not used
     @GET(ENDPOINT)
     fun getClassicMusic() : Observable<List<MusicResponse>>
 
+    //Request to get songs information
     @GET(ENDPOINT)
     fun getClassicTracks(@Query(TERM) term : String,
                          @Query(MEDIA) media : String,
                          @Query(ENTITY) entity : String,
                          @Query(LIMIT) limit: Int = 50) : Call<MusicResponse>
 
+    //Singleton to initialize retrofit
     companion object{
         fun initRetrofit(): IMusicAPI{
             return Retrofit.Builder().baseUrl(BASE_URL)

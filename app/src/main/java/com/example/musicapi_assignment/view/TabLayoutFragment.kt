@@ -29,7 +29,9 @@ class TabLayoutFragment : Fragment() {
         tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener{
             override fun onTabSelected(tab: TabLayout.Tab?) {
                 Log.d(TAG, "onTabSelected:")
-                if(requireActivity() is MainActivity)
+                if(requireActivity() is MainActivity) //If the activity is MainActivity
+                        //run MainActivity.executeRetrofit() with the tab text
+                        // see music_tab_layout.xml (android:text) of each element
                     (requireActivity() as MainActivity).executeRetrofit(tab?.text.toString())
             }
 

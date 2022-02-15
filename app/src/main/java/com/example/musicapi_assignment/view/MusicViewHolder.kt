@@ -9,9 +9,13 @@ import com.squareup.picasso.Picasso
 
 const val FREE = "FREE"
 
+
 class MusicViewHolder(private val binding : ItemLayoutBinding) : RecyclerView.ViewHolder(binding.root) {
 
-
+    /**
+     * Class to set the information of the each song on the layout of the item.
+     * @see MusicItemAdapter.OnBindViewHolder()
+     */
     fun onBind(trackInformation: TrackInformation, callBack: (TrackInformation)->Unit){
         binding.tvSongName.text = trackInformation.trackName
         binding.tvSongArtist.text = trackInformation.artistName

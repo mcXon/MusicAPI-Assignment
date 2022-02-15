@@ -20,6 +20,11 @@ class MusicDetailsPlayerFragment : Fragment() {
     companion object {
         const val DETAIL_TRACK = "DetailTrack"
         private const val TAG = "MusicDetailsPlayerFragment"
+        /**
+         * When the instance is created (When an item is selected) @see FragmentActivity.onMusicItemSelected
+         * When an item is selected pass as argument the son selected
+         */
+
         fun newInstance(track: TrackInformation): MusicDetailsPlayerFragment {
             return MusicDetailsPlayerFragment().apply {
                 arguments = Bundle().apply{
@@ -37,6 +42,10 @@ class MusicDetailsPlayerFragment : Fragment() {
         super.onCreateView(inflater, container, savedInstanceState)
         binding = MusicDetailsPlayerBinding.inflate(inflater, container,false)
 
+        /**
+         * If there are arguments set the image of the track,
+         * create an object MediaPlayer and start to play the music.
+         */
         arguments?.let { bundle ->
             bundle.getParcelable<TrackInformation>(DETAIL_TRACK)?.let {
                 Picasso.get().load(it.artworkUrl100).into(binding.ivDetailsAlbumCover)
@@ -48,6 +57,9 @@ class MusicDetailsPlayerFragment : Fragment() {
         return binding.root
     }
 
+    /**
+     * When pressing back stop playing music
+     */
     override fun onDestroyView() {
         if(mediaPlayer!=null){
             mediaPlayer.stop()

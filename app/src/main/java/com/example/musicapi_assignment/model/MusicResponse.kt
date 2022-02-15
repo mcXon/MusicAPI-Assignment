@@ -2,6 +2,9 @@ package com.example.musicapi_assignment.model
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 
+/**
+ * Definition of the elements retrieved from the API
+ */
 @Parcelize
 data class MusicResponse(
     val resultCount : Int,
