@@ -15,6 +15,10 @@ class MusicItemAdapter(private val dataset : List<TrackInformation>,
                        private val onMusicItemSelected : (TrackInformation) -> Unit)
                         : RecyclerView.Adapter<MusicViewHolder>() {
 
+    fun setListOfSongs(){
+        notifyDataSetChanged()
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
         MusicViewHolder(
             /**

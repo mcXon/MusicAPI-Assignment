@@ -6,33 +6,38 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.musicapi_assignment.MainActivity
 import com.example.musicapi_assignment.databinding.MusicDetailsFrameLayoutBinding
-import com.example.musicapi_assignment.model.MusicResponse
+import com.example.musicapi_assignment.model.CLASSIC_TERM
 import com.example.musicapi_assignment.model.TrackInformation
+import com.example.musicapi_assignment.viewmodel.MusicViewModel
 
-
-private const val TAG = "ClassicMusicLayout"
 
 /**
  * Music Fragment
  */
 class MusicLayoutFragment : Fragment() {
 
+    /**
+     * Create instance of viewModel
+     */
+    private val vModel : MusicViewModel by lazy{
+        ViewModelProvider(requireActivity(),
+            object : ViewModelProvider.Factory{
+                override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+                    return MusicViewModel() as T
+                }
+            })[MusicViewModel::class.java]
+    }
+
     companion object{
         private const val MUSIC_TYPE = "classic"
-
-        /**
-         * Each instance requires an object of MusicResponse in order to display the music of the
-         * selected category (the text of the tabs)
-         *
-         * @see TabLayoutFragment onTabSelected()
-         */
-        fun newInstance(musicResponse: MusicResponse) :MusicLayoutFragment{
+        fun newInstance() :MusicLayoutFragment{
             val fragment = MusicLayoutFragment()
             val bundle = Bundle()
-            bundle.putParcelable(MUSIC_TYPE, musicResponse)
             fragment.arguments = bundle
             return fragment
         }
@@ -48,42 +53,16 @@ class MusicLayoutFragment : Fragment() {
         super.onCreateView(inflater, container, savedInstanceState)
         binding = MusicDetailsFrameLayoutBinding.inflate(inflater, container, false)
 
-        /**
-         * Check the arguments received from the function newInstance() of this class inside the
-         * companion object. If there are items proceed to execute the initView()
-         */
-
-        arguments?.let { bundle ->
-            bundle.getParcelable<MusicResponse>(MUSIC_TYPE)?.let {
-                initView(it)
-            }
-        }
+        initView(vModel)
         return binding.root
     }
 
     /**
      * @param dataset Music retrieved from the API call
      */
-    private fun initView(dataset: MusicResponse){
+    private fun initView(vModel: MusicViewModel){
+        getSongsFromViewModel(CLASSIC_TERM, vModel)
         binding.musicListView.layoutManager = LinearLayoutManager(context)
-
-        /**
-         *Will iterate each element retrieved from the @param dataset  to create an Item of the
-         * adapter and associate it with a TrackInformation object
-         */
-
-        binding.musicListView.adapter = MusicItemAdapter(dataset.results.map {
-            TrackInformation(
-                it.trackName,
-                it.artistName,
-                it.trackPrice,
-                it.artworkUrl100,
-                it.previewUrl
-            )
-        }){
-            //onMusicItemSelected will be executed when an item is selected
-            requireActivity().onMusicItemSelected(it)
-        }
     }
 
     /**
@@ -93,5 +72,24 @@ class MusicLayoutFragment : Fragment() {
     private fun FragmentActivity.onMusicItemSelected(trackInformation: TrackInformation){
         supportFragmentManager.beginTransaction().replace(android.R.id.content,
             MusicDetailsPlayerFragment.newInstance(trackInformation)).addToBackStack(null).commit()
+    }
+
+    private fun getSongsFromViewModel(searchTerm : String, vModel: MusicViewModel){
+        vModel.getSongs().observe(viewLifecycleOwner, Observer {dataset->
+//            Log.d(TAG, "executeRetrofit: $dataset")
+            val musicItemAdapter = MusicItemAdapter(dataset.results.map {
+                TrackInformation(
+                    it.trackName,
+                    it.artistName,
+                    it.trackPrice,
+                    it.artworkUrl100,
+                    it.previewUrl
+                )
+            }){
+                //onMusicItemSelected will be executed when an item is selected
+                requireActivity().onMusicItemSelected(it)
+            }
+            binding.musicListView.adapter = musicItemAdapter
+        })
     }
 }

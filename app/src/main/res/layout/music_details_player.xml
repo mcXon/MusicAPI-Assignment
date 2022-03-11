@@ -5,7 +5,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:background="#DD191515"
-    android:clickable="true">
+    android:clickable="true"
+    android:focusable="true">
 
     <ImageView
         android:id="@+id/iv_details_album_cover"
