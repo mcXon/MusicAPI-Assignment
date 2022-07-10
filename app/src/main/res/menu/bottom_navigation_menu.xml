@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/tab_item_classic"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:icon="@drawable/ic_baseline_music_note_24"
+        android:text="@string/classic_option"
+        android:title="@string/classic_option" />
+
+    <item
+        android:id="@+id/tab_item_hard_rock"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:icon="@drawable/ic_baseline_volume_up_24"
+        android:text="@string/hard_rock_option"
+        android:title="@string/hard_rock_option"
+        />
+
+    <item
+        android:id="@+id/tab_item_cash"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:icon="@drawable/ic_baseline_search_24"
+        android:text="@string/johnny_cash_option"
+        android:title="@string/johnny_cash_option"
+        />
+</menu>
