@@ -9,6 +9,8 @@ const val TERM = "term"
 const val LIMIT = "limit"
 
 const val CLASSIC_TERM = "classic"
+const val HARD_ROCK = "hard rock"
+const val J_CASH = "johnny cash"
 
 const val MEDIA_TYPE = "music"
 const val ENTITY_TYPE = "song"
