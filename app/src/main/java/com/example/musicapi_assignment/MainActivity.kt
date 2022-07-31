@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.musicapi_assignment.databinding.ActivityMainBinding
 import com.example.musicapi_assignment.view.MusicLayoutFragment
 import com.example.musicapi_assignment.view.TabLayoutFragment
+import com.google.android.material.tabs.TabLayout
 
 private lateinit var binding: ActivityMainBinding
 private const val TAG = "MainActivity"
@@ -18,19 +19,21 @@ private const val TAG = "MainActivity"
  */
 
 class MainActivity : AppCompatActivity() {
+    private lateinit var tabLayout : TabLayoutFragment
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        tabLayout = TabLayoutFragment()
         binding = ActivityMainBinding.inflate(layoutInflater)
         //Bind the tab_layout to the first Fragment Layout
-        supportFragmentManager.beginTransaction().replace(R.id.music_tab_layout, TabLayoutFragment())
-            .commit()
+        supportFragmentManager.beginTransaction().replace(R.id.music_tab_layout, tabLayout).commit()
 
         //As the first element is the Classic music -> execute the search for "classic"
         setContentView(binding.root)
         inflateMusicFragment()
     }
+
 
     /**
      * @param String (word to search in the API)

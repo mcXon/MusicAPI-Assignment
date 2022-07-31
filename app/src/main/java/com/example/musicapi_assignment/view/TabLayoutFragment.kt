@@ -2,28 +2,32 @@ package com.example.musicapi_assignment.view
 
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewModelScope
 import com.example.musicapi_assignment.MainActivity
+import com.example.musicapi_assignment.R
 import com.example.musicapi_assignment.databinding.MusicTabLayoutBinding
+import com.example.musicapi_assignment.model.*
 import com.example.musicapi_assignment.viewmodel.MusicViewModel
+import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.navigation.NavigationBarView
 import com.google.android.material.tabs.TabLayout
+import kotlinx.coroutines.launch
 
 private const val TAG = "TabLayoutFragment"
 
 class TabLayoutFragment : Fragment() {
 
     private lateinit var binding: MusicTabLayoutBinding
-    private lateinit var tabLayout : TabLayout
+    lateinit var bottomTabLayout : BottomNavigationView
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        savedInstanceState.let {
+    val viewModel : MusicViewModel by activityViewModels()
 
-        }
-    }
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -31,25 +35,33 @@ class TabLayoutFragment : Fragment() {
     ): View? {
         super.onCreateView(inflater, container, savedInstanceState)
         binding = MusicTabLayoutBinding.inflate(inflater, container,false)
-
-        tabLayout = binding.musicTabsCategory
-        val viewModel = ViewModelProvider(requireActivity()).get(MusicViewModel::class.java)
-        tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener{
-            override fun onTabSelected(tab: TabLayout.Tab?) {
-                if(requireActivity() is MainActivity) //If the activity is MainActivity
-                        //run MainActivity.executeRetrofit() with the tab text
-                        // see music_tab_layout.xml (android:text) of each element
-                    viewModel.getSongs(tab?.text.toString())
-            }
-
-            override fun onTabUnselected(tab: TabLayout.Tab?) {
-            }
-
-            override fun onTabReselected(tab: TabLayout.Tab?) {
-            }
-
-        })
-
+        bottomTabLayout = binding.musicTabsCategory
+        bottomTabLayout.setOnItemSelectedListener { item ->
+            viewModel.onclickAction(item.title.toString())
+            true
+        }
         return binding.root
     }
+
+
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putInt(TAG, bottomTabLayout.selectedItemId)
+    }
+
+    override fun onViewStateRestored(savedInstanceState: Bundle?) {
+        super.onViewStateRestored(savedInstanceState)
+        savedInstanceState?.getInt(TAG)?.let {
+            bottomTabLayout.selectedItemId = it
+        }
+    }
+
+    fun MusicViewModel.onclickAction(term : String){
+        viewModel.viewModelScope.launch {
+            viewModel.requestSongs(term)
+        }
+    }
 }
+
+
