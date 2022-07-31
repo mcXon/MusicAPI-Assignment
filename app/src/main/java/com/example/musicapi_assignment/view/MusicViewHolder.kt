@@ -16,7 +16,8 @@ class MusicViewHolder(private val binding : ItemLayoutBinding) : RecyclerView.Vi
      * Class to set the information of the each song on the layout of the item.
      * @see MusicItemAdapter.OnBindViewHolder()
      */
-    fun onBind(trackInformation: TrackInformation, callBack: (TrackInformation)->Unit){
+    fun onBind(trackInformation: TrackInformation//, callBack: (TrackInformation)->Unit
+    ){
         binding.tvSongName.text = trackInformation.trackName
         binding.tvSongArtist.text = trackInformation.artistName
         if(trackInformation.trackPrice > 0){
@@ -29,7 +30,7 @@ class MusicViewHolder(private val binding : ItemLayoutBinding) : RecyclerView.Vi
 
         //add listener
         binding.root.setOnClickListener{
-            callBack(trackInformation)
+            //callBack(trackInformation)
         }
     }
 }

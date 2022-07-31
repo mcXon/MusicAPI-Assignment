@@ -11,21 +11,12 @@ import com.example.musicapi_assignment.model.TrackInformation
  * Adapter class linked to the recycler view
  *  This is assigned in the Class MusicLayoutFragment ln 75
  */
-class MusicItemAdapter(private val dataset : List<TrackInformation>,
-                       private val onMusicItemSelected : (TrackInformation) -> Unit)
-                        : RecyclerView.Adapter<MusicViewHolder>() {
-
-    fun setListOfSongs(){
-        notifyDataSetChanged()
-    }
+class MusicItemAdapter(private var dataset : List<TrackInformation>
+//, private val onMusicItemSelected : (TrackInformation) -> Unit
+) : RecyclerView.Adapter<MusicViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
         MusicViewHolder(
-            /**
-             * Each item will be an element of ItemLayoutBinding
-             * @see item_layout.xml
-             * if you command+Click the object ItemLayoutBinding it will open the xml
-             */
             ItemLayoutBinding.inflate(LayoutInflater.from(parent.context), parent,false)
         )
 
@@ -33,9 +24,8 @@ class MusicItemAdapter(private val dataset : List<TrackInformation>,
         /**
          * required to perform the click action on each element
          */
-        holder.onBind(dataset[position]){
-            onMusicItemSelected(it)
-        }
+        //TODO implement on click action
+        holder.onBind(dataset[position])
     }
 
     /**
@@ -43,4 +33,8 @@ class MusicItemAdapter(private val dataset : List<TrackInformation>,
      */
     override fun getItemCount(): Int = dataset.size
 
+    fun updateDisplayingSongs(results: List<TrackInformation>) {
+        dataset = results
+        notifyDataSetChanged()
+    }
 }
