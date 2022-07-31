@@ -84,7 +84,7 @@ class MusicLayoutFragment : Fragment() {
     }
 
     private fun showError(errorResponse: String) {
-
+        //TODO implement error screen?
     }
 
     private fun updateSongs(songs: MusicResponse) {
@@ -92,6 +92,6 @@ class MusicLayoutFragment : Fragment() {
     }
 
     private fun showLoading(loading: Boolean) {
-
+        //TODO implement Loading screen
     }
 }

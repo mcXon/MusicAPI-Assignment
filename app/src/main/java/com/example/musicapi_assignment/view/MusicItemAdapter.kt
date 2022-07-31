@@ -24,6 +24,7 @@ class MusicItemAdapter(private var dataset : List<TrackInformation>
         /**
          * required to perform the click action on each element
          */
+        //TODO implement on click action
         holder.onBind(dataset[position])
     }
 
