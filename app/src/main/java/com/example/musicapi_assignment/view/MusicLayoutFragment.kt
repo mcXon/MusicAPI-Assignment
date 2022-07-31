@@ -6,13 +6,15 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.musicapi_assignment.databinding.MusicDetailsFrameLayoutBinding
 import com.example.musicapi_assignment.model.CLASSIC_TERM
+import com.example.musicapi_assignment.model.MusicResponse
 import com.example.musicapi_assignment.model.TrackInformation
+import com.example.musicapi_assignment.model.UIState
 import com.example.musicapi_assignment.viewmodel.MusicViewModel
 
 
@@ -24,13 +26,10 @@ class MusicLayoutFragment : Fragment() {
     /**
      * Create instance of viewModel
      */
-    private val vModel : MusicViewModel by lazy{
-        ViewModelProvider(requireActivity(),
-            object : ViewModelProvider.Factory{
-                override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-                    return MusicViewModel() as T
-                }
-            })[MusicViewModel::class.java]
+    val viewModel : MusicViewModel by activityViewModels()
+
+    private val adapter : MusicItemAdapter by lazy {
+        MusicItemAdapter(emptyList())
     }
 
     companion object{
@@ -52,17 +51,17 @@ class MusicLayoutFragment : Fragment() {
     ): View? {
         super.onCreateView(inflater, container, savedInstanceState)
         binding = MusicDetailsFrameLayoutBinding.inflate(inflater, container, false)
-
-        initView(vModel)
+        initObservables()
+        initView()
         return binding.root
     }
 
     /**
      * @param dataset Music retrieved from the API call
      */
-    private fun initView(vModel: MusicViewModel){
-        getSongsFromViewModel(CLASSIC_TERM, vModel)
+    private fun initView(){
         binding.musicListView.layoutManager = LinearLayoutManager(context)
+        binding.musicListView.adapter = adapter
     }
 
     /**
@@ -74,22 +73,25 @@ class MusicLayoutFragment : Fragment() {
             MusicDetailsPlayerFragment.newInstance(trackInformation)).addToBackStack(null).commit()
     }
 
-    private fun getSongsFromViewModel(searchTerm : String, vModel: MusicViewModel){
-        vModel.getSongs().observe(viewLifecycleOwner, Observer {dataset->
-//            Log.d(TAG, "executeRetrofit: $dataset")
-            val musicItemAdapter = MusicItemAdapter(dataset.results.map {
-                TrackInformation(
-                    it.trackName,
-                    it.artistName,
-                    it.trackPrice,
-                    it.artworkUrl100,
-                    it.previewUrl
-                )
-            }){
-                //onMusicItemSelected will be executed when an item is selected
-                requireActivity().onMusicItemSelected(it)
+    private fun initObservables(){
+        viewModel.songs.observe(viewLifecycleOwner){ state ->
+            when (state){
+                is UIState.RESPONSE -> updateSongs(state.songs)
+                is UIState.LOADING -> showLoading(state.isLoading)
+                is UIState.ERROR -> showError(state.errorResponse)
             }
-            binding.musicListView.adapter = musicItemAdapter
-        })
+        }
+    }
+
+    private fun showError(errorResponse: String) {
+
+    }
+
+    private fun updateSongs(songs: MusicResponse) {
+        adapter.updateDisplayingSongs(songs.results)
+    }
+
+    private fun showLoading(loading: Boolean) {
+
     }
 }
