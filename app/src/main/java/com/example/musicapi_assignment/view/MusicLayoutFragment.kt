@@ -67,6 +67,7 @@ class MusicLayoutFragment : Fragment() {
     }
 
     private fun initObservables(){
+        //Test changes
         viewModel.songs.observe(viewLifecycleOwner){ state ->
             when (state){
                 is UIState.RESPONSE -> updateSongs(state.songs)
