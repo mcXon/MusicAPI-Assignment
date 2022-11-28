@@ -7,11 +7,8 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.musicapi_assignment.databinding.MusicDetailsFrameLayoutBinding
-import com.example.musicapi_assignment.model.CLASSIC_TERM
 import com.example.musicapi_assignment.model.MusicResponse
 import com.example.musicapi_assignment.model.TrackInformation
 import com.example.musicapi_assignment.model.UIState
@@ -27,22 +24,18 @@ class MusicLayoutFragment : Fragment() {
      * Create instance of viewModel
      */
     val viewModel : MusicViewModel by activityViewModels()
+    private lateinit var binding : MusicDetailsFrameLayoutBinding
 
     private val adapter : MusicItemAdapter by lazy {
         MusicItemAdapter(emptyList())
     }
 
     companion object{
-        private const val MUSIC_TYPE = "classic"
         fun newInstance() :MusicLayoutFragment{
-            val fragment = MusicLayoutFragment()
-            val bundle = Bundle()
-            fragment.arguments = bundle
-            return fragment
+            return  MusicLayoutFragment()
         }
     }
 
-    private lateinit var binding : MusicDetailsFrameLayoutBinding
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -85,6 +78,7 @@ class MusicLayoutFragment : Fragment() {
 
     private fun showError(errorResponse: String) {
         //TODO implement error screen?
+
     }
 
     private fun updateSongs(songs: MusicResponse) {
