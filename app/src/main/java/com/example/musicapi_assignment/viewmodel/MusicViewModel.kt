@@ -6,8 +6,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.musicapi_assignment.di.Provider
-import com.example.musicapi_assignment.model.*
-import kotlinx.coroutines.flow.collect
+import com.example.musicapi_assignment.model.CLASSIC_TERM
+import com.example.musicapi_assignment.model.Repository
+import com.example.musicapi_assignment.model.UIState
 import kotlinx.coroutines.launch
 
 private const val TAG = "MusicViewModel"
@@ -31,6 +32,7 @@ class MusicViewModel : ViewModel(){
 
     suspend fun requestSongs(term : String = CLASSIC_TERM) {
         repository.getSongs(term).collect(){ uiState->
+            Log.d(TAG, "requestSongs of: $term")
             _songs.postValue(uiState)
         }
     }

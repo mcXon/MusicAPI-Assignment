@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.musicapi_assignment.databinding.ActivityMainBinding
 import com.example.musicapi_assignment.view.MusicLayoutFragment
 import com.example.musicapi_assignment.view.TabLayoutFragment
-import com.google.android.material.tabs.TabLayout
 
 private lateinit var binding: ActivityMainBinding
 private const val TAG = "MainActivity"
