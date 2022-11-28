@@ -1,7 +1,6 @@
 package com.example.musicapi_assignment.common
 
 import com.example.musicapi_assignment.model.*
-import retrofit2.Call
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
