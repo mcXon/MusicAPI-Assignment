@@ -81,6 +81,9 @@ class MusicLayoutFragment : Fragment() {
         //TODO implement error screen?
         //added test 1
         viewModel.songs
+        //testing 2
+        viewModel.songs.value
+
     }
 
     private fun updateSongs(songs: MusicResponse) {
